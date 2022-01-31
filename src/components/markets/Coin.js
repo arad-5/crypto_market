@@ -5,10 +5,14 @@ import styled from "styled-components";
 import { BiDollar } from "react-icons/bi";
 import { AiOutlineRise, AiOutlineFall } from "react-icons/ai";
 const Coin = ({ coin }) => {
-    const { name, symbol, id, image, current_price, price_change_percentage_24h, market_cap_rank } = coin;
+    const { name, symbol, id, image, current_price, price_change_percentage_24h, market_cap_rank, market_cap } = coin;
     console.log(coin);
     return (
         <Container>
+            <Market_cap>
+                <BiDollar />
+                {market_cap.toLocaleString()}
+            </Market_cap>
             <Label>
                 <img src={image} alt={id} />
                 <Name>
@@ -25,12 +29,16 @@ const Coin = ({ coin }) => {
                     {current_price}
                 </Current_price>
             </Price>
+
             {/* absolute 👇🏻*/}
             <Rank>{market_cap_rank}</Rank>
             <Arrow status={Math.sign(price_change_percentage_24h)}>{Math.sign(price_change_percentage_24h) === -1 ? <AiOutlineFall /> : <AiOutlineRise />}</Arrow>
             <Down_row>
                 <Down_rank>{market_cap_rank}</Down_rank>
-                <Down_cap></Down_cap>
+                <Market_cap>
+                    <BiDollar />
+                    {market_cap.toLocaleString()}
+                </Market_cap>
             </Down_row>
         </Container>
     );
@@ -144,20 +152,46 @@ const Down_row = styled.div`
     bottom: -1.5rem;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #f00;
-    border-radius: 0 0 5px 5px;
-    display: flex;
     justify-content: space-between;
     padding: 0 0.5rem;
     display: none;
     @media (max-width: 940px) {
-        display: block;
+        display: flex;
     }
 `;
 const Down_rank = styled.div`
+    background-color: blue;
+    background-color: #0021ff;
+    box-shadow: 0 0 30px 5px blue;
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: 0 0 1rem 1rem;
+    line-height: 2rem;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #fff;
+    padding: 0 0.5rem;
+`;
+const Market_cap = styled.div`
+    &:nth-child(1) {
+        position: absolute;
+        transform: translateX(-50%);
+        top: 0;
+        left: 50%;
+    @media (max-width: 940px) {
+        display: none;
+    }
+    }
+    background-color: #0021ff;
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: 0 0 1rem 1rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #fff;
+    padding: 0 0.5rem;
+`;
 
-`
-const Down_cap = styled.div`
-
-`
 export default Coin;

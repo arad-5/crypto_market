@@ -31,16 +31,6 @@ const Markets = () => {
     };
     return (
         <Container>
-            <Page_change>
-                <Page_change_nutton  onClick={() => pageChanger(-1) } style={{opacity: page === 1 && "50%" }}>
-                    <AiFillCaretLeft />
-                </Page_change_nutton>
-                <span>{page}</span>
-                <Page_change_nutton onClick={() => pageChanger(1)}>
-                    <AiFillCaretRight />
-                </Page_change_nutton>
-            </Page_change>
-
             {data.length ? (
                 data.map((data) => <Coin key={data.id} coin={data} />)
             ) : (
@@ -48,6 +38,15 @@ const Markets = () => {
                     <h1>loading</h1>
                 </center>
             )}
+            <Page_change>
+                <Page_change_nutton onClick={() => pageChanger(-1)} style={{ opacity: page === 1 && "50%" }}>
+                    <AiFillCaretLeft />
+                </Page_change_nutton>
+                <span>{page}</span>
+                <Page_change_nutton onClick={() => pageChanger(1)}>
+                    <AiFillCaretRight />
+                </Page_change_nutton>
+            </Page_change>
         </Container>
     );
 };
@@ -70,11 +69,11 @@ const Page_change = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    >span { 
+    > span {
         padding: 0 1rem;
         height: 2rem;
         line-height: 2rem;
-        margin: 0  1rem;
+        margin: 0 1rem;
         background-color: #fff;
         border-radius: 10px;
         font-size: 1.4rem;
