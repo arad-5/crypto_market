@@ -5,12 +5,27 @@ import styled from "styled-components";
 import { MdSearch } from "react-icons/md";
 import { BsArrowRightShort } from "react-icons/bs";
 
-const Search = ({ searchActive, setSearchActive }) => {
-    const handleSearch = (event) => {
+//helpers
+import { fetcher } from "../api/fetcher";
+
+const Search = ({ searchActive, setSearchActive, isSearching, setIsSearching ,  setData}) => {
+
+    const handleSearch = async (event) => {
         event.preventDefault();
+        setSearchActive(false);
+        let query = event.target[1].value;
+        if (!query) {
+            return
+        }
+        setIsSearching(true);
+        setData({})
+        const await_data = fetcher(`search?query=${query}`);
+        const result = await await_data;
+        setData(result);
     };
 
     const searchInput = useRef(null);
+
     return (
         <Container>
             <Button

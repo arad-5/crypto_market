@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Logo from "../svg/logo-rounded-inside.svg";
 import Search from "./Search";
-export default function Navbar() {
+export default function Navbar({setIsSearching , setData}) {
     const [searchActive, setSearchActive] = useState(false);
     return (
         <Nav style={{ height: searchActive && "9rem", paddingBottom: searchActive && "5rem" }}>
             <Logo_container>
                 <img src={Logo} alt="Arad Taghikhani" />
             </Logo_container>
-            <Search searchActive={searchActive} setSearchActive={setSearchActive} />
+            <Search  searchActive={searchActive} setSearchActive={setSearchActive} setIsSearching={setIsSearching} setData={setData} />
         </Nav>
     );
 }
