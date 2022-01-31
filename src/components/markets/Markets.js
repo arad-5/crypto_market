@@ -8,16 +8,18 @@ import Coin from "./Coin";
 //icons
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 
-const Markets = () => {
-    const [data, setData] = useState([]);
+const Markets = ({ data, setData }) => {
     const [page, setPage] = useState(1);
+
     async function fetch_data(page) {
         const await_data = fetcher(`coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}&sparkline=false`);
         setData(await await_data);
     }
+
     useEffect(() => {
         fetch_data(page);
     }, [page]);
+
     const pageChanger = (direction) => {
         const change = () => {
             setData([]);
@@ -29,6 +31,7 @@ const Markets = () => {
             change();
         }
     };
+
     return (
         <Container>
             {data.length ? (
@@ -50,7 +53,9 @@ const Markets = () => {
         </Container>
     );
 };
+
 // 💅🏻styling
+
 const Container = styled.div`
     margin: 0% auto;
     width: 100%;
@@ -62,10 +67,10 @@ const Page_change = styled.div`
     position: fixed;
     left: 0;
     bottom: 0;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     z-index: 10;
-    background-color: #000;
-    background: linear-gradient(to bottom, transparent, #000);
+    background-color: #00000017;
+    backdrop-filter: blur(6px);
     display: flex;
     justify-content: center;
     align-items: center;

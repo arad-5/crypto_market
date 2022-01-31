@@ -6,7 +6,6 @@ import { BiDollar } from "react-icons/bi";
 import { AiOutlineRise, AiOutlineFall } from "react-icons/ai";
 const Coin = ({ coin }) => {
     const { name, symbol, id, image, current_price, price_change_percentage_24h, market_cap_rank, market_cap } = coin;
-    console.log(coin);
     return (
         <Container>
             <Market_cap>
@@ -29,7 +28,6 @@ const Coin = ({ coin }) => {
                     {current_price}
                 </Current_price>
             </Price>
-
             {/* absolute 👇🏻*/}
             <Rank>{market_cap_rank}</Rank>
             <Arrow status={Math.sign(price_change_percentage_24h)}>{Math.sign(price_change_percentage_24h) === -1 ? <AiOutlineFall /> : <AiOutlineRise />}</Arrow>
@@ -43,11 +41,14 @@ const Coin = ({ coin }) => {
         </Container>
     );
 };
+
+// 💅🏻styling
 const Container = styled.div`
     display: flex;
     height: 4rem;
     padding: 0.5rem 1rem;
     background-color: #fff;
+    box-shadow: 0 0 5px 0.5px #fff;
     margin: 1rem 0;
     border-radius: 1rem;
     align-items: center;
@@ -118,7 +119,7 @@ const Rank = styled.div`
     left: -1rem;
     transform: translateX(-100%);
     background-color: #0021ff;
-    box-shadow: 0 0 30px 5px blue;
+    box-shadow: 0 0 30px 5px #0021ff;
     min-width: 2rem;
     height: 2rem;
     border-radius: 2rem;
@@ -160,9 +161,9 @@ const Down_row = styled.div`
     }
 `;
 const Down_rank = styled.div`
-    background-color: blue;
     background-color: #0021ff;
-    box-shadow: 0 0 30px 5px blue;
+    background-color: #0021ff;
+    box-shadow: 0 0 30px 5px #0021ff;
     min-width: 2rem;
     height: 2rem;
     border-radius: 0 0 1rem 1rem;
@@ -178,9 +179,9 @@ const Market_cap = styled.div`
         transform: translateX(-50%);
         top: 0;
         left: 50%;
-    @media (max-width: 940px) {
-        display: none;
-    }
+        @media (max-width: 940px) {
+            display: none;
+        }
     }
     background-color: #0021ff;
     min-width: 2rem;
@@ -192,6 +193,8 @@ const Market_cap = styled.div`
     font-size: 1.1rem;
     color: #fff;
     padding: 0 0.5rem;
+    overflow: auto;
+    box-shadow: 0 0 10px 1px #0021ff;
 `;
 
 export default Coin;

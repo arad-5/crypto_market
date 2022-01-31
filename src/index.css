@@ -9,6 +9,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background-color: #000624;
     color: #858585;
+    margin: 6rem 0 ;
 }
 
 code {
@@ -17,4 +18,11 @@ code {
 button {
     cursor: pointer;
     border: none;
+}
+input , select{
+    outline: none;
+    border: none;
+}
+select{
+    cursor: pointer;
 }
