@@ -8,24 +8,34 @@ import { BsArrowRightShort } from "react-icons/bs";
 //helpers
 import { fetcher } from "../api/fetcher";
 
-const Search = ({ searchActive, setSearchActive, isSearching, setIsSearching ,  setData}) => {
-
+const Search = ({ searchActive, setSearchActive, isSearching, setIsSearching, setData, data }) => {
     const handleSearch = async (event) => {
+        const query = event.target[1].value;
+        const option = event.target[2].value;
         event.preventDefault();
-        setSearchActive(false);
-        let query = event.target[1].value;
         if (!query) {
-            return
+            return;
         }
-        setIsSearching(true);
-        setData({})
-        const await_data = fetcher(`search?query=${query}`);
-        const result = await await_data;
-        setData(result);
+        setSearchActive(false);
+        if (option === "all") {
+            setData({});
+            setIsSearching(true);
+            const await_data = fetcher(`search?query=${query}`);
+            const result = await await_data;
+            setData(result);
+        }
     };
 
     const searchInput = useRef(null);
-
+    const handleMarketSearch = (event) => {
+        const option = event.target.form[2].value;
+        const value = event.target.value;
+        if (option !== "page") {
+            return;
+        }
+        const filtered_data = data.filter((coin) => coin.id.includes(value));
+        setData(filtered_data);
+    };
     return (
         <Container>
             <Button
@@ -38,14 +48,14 @@ const Search = ({ searchActive, setSearchActive, isSearching, setIsSearching ,  
             </Button>
 
             <Form_container style={{ transform: searchActive && "translateX(0%)" }}>
-                <Search_form onSubmit={(event) => handleSearch(event)}>
+                <Search_form onSubmit={(event) => handleSearch(event)} onChange={(event) => handleMarketSearch(event)}>
                     <Form_button type="submit">
                         <MdSearch />
                     </Form_button>
                     <input type="text" ref={searchInput} />
                     <Select>
-                        <option value="true">All coins</option>
-                        <option>This page</option>
+                        <option value="all">All coins</option>
+                        {!isSearching && <option value="page">This page</option>}
                     </Select>
                 </Search_form>
             </Form_container>

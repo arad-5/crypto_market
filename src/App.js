@@ -10,8 +10,8 @@ function App() {
     const [isSearching, setIsSearching] = useState(false);
     return (
         <>
-            <Navbar isSerching={isSearching} setIsSearching={setIsSearching} setData={setData} />
-            {isSearching ? <SearchResults isSerching={isSearching} setIsSearching={setIsSearching} data={data} setData={setData} /> : <Markets data={data} setData={setData} />}
+            <Navbar isSearching={isSearching} setIsSearching={setIsSearching} setData={setData} data={data} />
+            {isSearching ? <SearchResults isSerching={isSearching} setIsSearching={setIsSearching} data={data} setData={setData} /> : <Markets isSearching={isSearching} data={data} setData={setData} />}
         </>
     );
 }

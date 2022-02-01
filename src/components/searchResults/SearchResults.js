@@ -1,23 +1,26 @@
 import React from "react";
 import styled from "styled-components";
-import Searching from "./Searching";
+import Loading from "./Loading";
 const SearchResults = ({ data }) => {
-    console.log(data.coins);
     return (
         <>
             {!!data.coins ? (
                 <Result_container>
-                    {data.coins.map((coin) => (
-                        <Result_coin key={coin.id}>
-                            <Image src={coin.large} alt={coin.id} />
-                            <Name>{coin.id}</Name>
-                            <Symbol>{coin.Symbol}</Symbol>
-                            <Rank>{coin.market_cap_rank}</Rank>
-                        </Result_coin>
-                    ))}
+                    {data.coins && data.coins.length >= 1 ? (
+                        data.coins.map((coin) => (
+                            <Result_coin key={coin.id}>
+                                <Image src={coin.large} alt={coin.id} />
+                                <Name>{coin.id}</Name>
+                                <Symbol>{coin.Symbol}</Symbol>
+                                <Rank>{coin.market_cap_rank}</Rank>
+                            </Result_coin>
+                        ))
+                    ) : (
+                        <Not_found>The coin you are looking for is not exists in api</Not_found>
+                    )}
                 </Result_container>
             ) : (
-                <Searching />
+                <Loading />
             )}
         </>
     );
@@ -70,5 +73,11 @@ const Rank = styled.div`
     color: #fff;
     padding: 0 0.5rem;
     display: inline-block;
+`;
+const Not_found = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 `;
 export default SearchResults;

@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { fetcher } from "../../api/fetcher";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+
+//context
+import { Markets_data_context } from "../context/Markets_data_context_provider";
 
 //components
 import Coin from "./Coin";
+import Loading from "../searchResults/Loading";
 
 //icons
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 
-const Markets = ({ data, setData }) => {
-    const [page, setPage] = useState(1);
-
-    async function fetch_data(page) {
-        const await_data = fetcher(`coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}&sparkline=false`);
-        setData(await await_data);
-    }
-    
-    useEffect(() => {
-        fetch_data(page);
-    }, [page]);
-
+const Markets = ({ data, setData, isSearching }) => {
+    const [displayData, setDisplayData] = useState([]);
+    const {markets_data , setPage , page} = useContext(Markets_data_context);
     const pageChanger = (direction) => {
         const change = () => {
             setData([]);
@@ -31,16 +25,10 @@ const Markets = ({ data, setData }) => {
             change();
         }
     };
-
+    console.log(markets_data);
     return (
         <Container>
-            {data.length ? (
-                data.map((data) => <Coin key={data.id} coin={data} />)
-            ) : (
-                <center>
-                    <h1>loading</h1>
-                </center>
-            )}
+            {markets_data.length ? markets_data.map((data) => <Coin key={data.id} coin={data} />) : <Loading />}
             <Page_change>
                 <Page_change_nutton onClick={() => pageChanger(-1)} style={{ opacity: page === 1 && "50%" }}>
                     <AiFillCaretLeft />
@@ -60,7 +48,6 @@ const Container = styled.div`
     margin: 0% auto;
     width: 100%;
     max-width: 50rem;
-    /* padding: 3rem; */
 `;
 const Page_change = styled.div`
     width: 100%;
