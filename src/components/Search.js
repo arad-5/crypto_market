@@ -1,5 +1,8 @@
-import React, { useRef } from "react";
-import styled from "styled-components";
+import React, { useRef, useContext, useEffect } from "react";
+import styled, { keyframes } from "styled-components";
+
+//context
+import { Markets_data_context } from "./context/Markets_data_context_provider";
 
 //icons
 import { MdSearch } from "react-icons/md";
@@ -8,34 +11,39 @@ import { BsArrowRightShort } from "react-icons/bs";
 //helpers
 import { fetcher } from "../api/fetcher";
 
-const Search = ({ searchActive, setSearchActive, isSearching, setIsSearching, setData, data }) => {
-    const handleSearch = async (event) => {
-        const query = event.target[1].value;
-        const option = event.target[2].value;
+const Search = ({ searchActive, setSearchActive }) => {
+    const { setMarkets_data, markets_data, page } = useContext(Markets_data_context);
+
+    //selected elements
+    const searchInput = useRef(null);
+    const select = useRef(null);
+
+    //search functions
+    const handleAllSearch = async (event) => {
         event.preventDefault();
-        if (!query) {
-            return;
-        }
         setSearchActive(false);
-        if (option === "all") {
-            setData({});
-            setIsSearching(true);
-            const await_data = fetcher(`search?query=${query}`);
-            const result = await await_data;
-            setData(result);
-        }
+        const query = searchInput.current.value;
+        const result_coins = await fetcher(`search?query=${query}`);
+        setMarkets_data({
+            ...markets_data,
+            all_coins_search_results: result_coins.coins,
+        });
+    };
+    const handlePageSearch = () => {
+        const query = searchInput.current.value;
+        const filtered_coins = markets_data.markets.filter((coin) => coin.id.includes(query.toLowerCase()));
+        searchInput.current.style.color = !!filtered_coins.length ? "#000" : "#f00";
+        !!filtered_coins.length &&
+            setMarkets_data({
+                ...markets_data,
+                display: filtered_coins,
+            });
     };
 
-    const searchInput = useRef(null);
-    const handleMarketSearch = (event) => {
-        const option = event.target.form[2].value;
-        const value = event.target.value;
-        if (option !== "page") {
-            return;
-        }
-        const filtered_data = data.filter((coin) => coin.id.includes(value));
-        setData(filtered_data);
-    };
+    useEffect(() => {
+        searchInput.current.value = "";
+    }, [page]);
+
     return (
         <Container>
             <Button
@@ -46,16 +54,36 @@ const Search = ({ searchActive, setSearchActive, isSearching, setIsSearching, se
             >
                 {searchActive ? <BsArrowRightShort /> : <MdSearch />}
             </Button>
-
+            {console.log(select.current)}
             <Form_container style={{ transform: searchActive && "translateX(0%)" }}>
-                <Search_form onSubmit={(event) => handleSearch(event)} onChange={(event) => handleMarketSearch(event)}>
-                    <Form_button type="submit">
-                        <MdSearch />
-                    </Form_button>
+                <Search_form
+                    onSubmit={(event) => {
+                        select.current.value === "all" && handleAllSearch(event);
+                    }}
+                    onChange={(event) => {
+                        select.current.value === "page" && handlePageSearch(event.target.value);
+                    }}
+                >
+                    {select.current && select.current.value === "all" ? (
+                        <Form_button type="submit">
+                            <MdSearch />
+                        </Form_button>
+                    ) : (
+                        <Searching_animation />
+                    )}
+
                     <input type="text" ref={searchInput} />
-                    <Select>
+                    <Select
+                        ref={select}
+                        onChange={() => {
+                            setMarkets_data({
+                                ...markets_data,
+                                display: markets_data.markets,
+                            });
+                        }}
+                    >
                         <option value="all">All coins</option>
-                        {!isSearching && <option value="page">This page</option>}
+                        {!!!markets_data.all_coins_search_results.length && <option value="page">page {page}</option>}
                     </Select>
                 </Search_form>
             </Form_container>
@@ -119,9 +147,37 @@ const Form_button = styled.button`
     align-items: center;
     justify-content: center;
 `;
+
 const Search_form = styled.form`
     display: flex;
     width: 100%;
     justify-content: space-between;
+`;
+
+const animation = keyframes`
+100% {
+    transform: translate(-0% , -50%)
+}
+`
+const Searching_animation = styled.div`
+    height: 2rem;
+    width: 2rem;
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    &:after {
+        content: "";
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background-color: #0021ff;
+        position: absolute;
+        transform: translate(-50% , -50%);
+        top: 50%;
+        left: 50%;
+        animation: ${animation} 1s infinite alternate-reverse;
+    }
 `;
 export default Search;

@@ -48,7 +48,6 @@ const Container = styled.div`
     height: 4rem;
     padding: 0.5rem 1rem;
     background-color: #fff;
-    box-shadow: 0 0 5px 0.5px #fff;
     margin: 1rem 0;
     border-radius: 1rem;
     align-items: center;

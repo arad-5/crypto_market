@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Loading from "./Loading";
-const SearchResults = ({ data }) => {
+const SearchResults = ({ results }) => {
     return (
         <>
-            {!!data.coins ? (
+            {!!results ? (
                 <Result_container>
-                    {data.coins && data.coins.length >= 1 ? (
-                        data.coins.map((coin) => (
+                    {results && results.length >= 1 ? (
+                        results.map((coin) => (
                             <Result_coin key={coin.id}>
                                 <Image src={coin.large} alt={coin.id} />
                                 <Name>{coin.id}</Name>

@@ -1,27 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
-//icons &b logo
+//context
+import { Markets_data_context } from "./context/Markets_data_context_provider";
+
+//icons & logo
 import Logo from "../svg/logo-rounded-inside.svg";
 import Search from "./Search";
 
-//helper
-import { fetcher } from "../api/fetcher";
+export default function Navbar({searchActive, setSearchActive}) {
 
-export default function Navbar({ setIsSearching, data, setData, isSearching }) {
-    const [searchActive, setSearchActive] = useState(false);
-    async function handle_back() {
-        setIsSearching(false);
-        const await_data = fetcher(`coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false`);
-        setData(await await_data);
+    const { markets_data, setMarkets_data  } = useContext(Markets_data_context);
+    const {all_coins_search_results} = markets_data;
+
+     function handle_back() {
+        setMarkets_data({
+            ...markets_data,
+            display: markets_data.markets,
+            all_coins_search_results: [],
+        });
     }
+
     return (
         <Nav style={{ height: searchActive && "9rem", paddingBottom: searchActive && "5rem" }}>
             <Logo_container>
                 <img src={Logo} alt="Arad Taghikhani" />
             </Logo_container>
-            {data.coins && <Back_to_market onClick={() => handle_back()}>Markets</Back_to_market>}
-            <Search searchActive={searchActive} setSearchActive={setSearchActive} isSearching={isSearching} setIsSearching={setIsSearching} setData={setData} data={data} />
+            {!!all_coins_search_results.length && <Back_to_market onClick={() => handle_back()}>Markets</Back_to_market>}
+            <Search searchActive={searchActive} setSearchActive={setSearchActive} />
         </Nav>
     );
 }

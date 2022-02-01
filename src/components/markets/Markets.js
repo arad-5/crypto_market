@@ -11,12 +11,11 @@ import Loading from "../searchResults/Loading";
 //icons
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 
-const Markets = ({ data, setData, isSearching }) => {
-    const [displayData, setDisplayData] = useState([]);
-    const {markets_data , setPage , page} = useContext(Markets_data_context);
+const Markets = ({ searchActive }) => {
+    const { markets_data, page, setPage } = useContext(Markets_data_context);
+
     const pageChanger = (direction) => {
         const change = () => {
-            setData([]);
             setPage(page + direction);
         };
         if (direction === -1) {
@@ -25,10 +24,12 @@ const Markets = ({ data, setData, isSearching }) => {
             change();
         }
     };
-    console.log(markets_data);
+
     return (
-        <Container>
-            {markets_data.length ? markets_data.map((data) => <Coin key={data.id} coin={data} />) : <Loading />}
+        <>
+            <Container style={{ transform: searchActive && "translateY(3rem)" }}>
+                {markets_data.display.length ? markets_data.display.map((data) => <Coin key={data.id} coin={data} />) : <Loading />}
+            </Container>
             <Page_change>
                 <Page_change_nutton onClick={() => pageChanger(-1)} style={{ opacity: page === 1 && "50%" }}>
                     <AiFillCaretLeft />
@@ -38,7 +39,7 @@ const Markets = ({ data, setData, isSearching }) => {
                     <AiFillCaretRight />
                 </Page_change_nutton>
             </Page_change>
-        </Container>
+        </>
     );
 };
 
@@ -48,6 +49,7 @@ const Container = styled.div`
     margin: 0% auto;
     width: 100%;
     max-width: 50rem;
+    transition: transform 200ms;
 `;
 const Page_change = styled.div`
     width: 100%;
