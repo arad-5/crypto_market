@@ -26,8 +26,13 @@ const Search = ({ searchActive, setSearchActive }) => {
         const result_coins = await fetcher(`search?query=${query}`);
         setMarkets_data({
             ...markets_data,
-            all_coins_search_results: result_coins.coins,
+            all_coins_search_results: [],
         });
+        result_coins && setMarkets_data({
+            ...markets_data,
+            all_coins_search_results: result_coins.coins,
+        }); 
+        
     };
     const handlePageSearch = () => {
         const query = searchInput.current.value;
@@ -54,7 +59,6 @@ const Search = ({ searchActive, setSearchActive }) => {
             >
                 {searchActive ? <BsArrowRightShort /> : <MdSearch />}
             </Button>
-            {console.log(select.current)}
             <Form_container style={{ transform: searchActive && "translateX(0%)" }}>
                 <Search_form
                     onSubmit={(event) => {
@@ -155,10 +159,10 @@ const Search_form = styled.form`
 `;
 
 const animation = keyframes`
-100% {
-    transform: translate(-0% , -50%)
-}
-`
+    100% {
+        transform: translate(-0% , -50%)
+    }
+`;
 const Searching_animation = styled.div`
     height: 2rem;
     width: 2rem;
@@ -174,7 +178,7 @@ const Searching_animation = styled.div`
         border-radius: 50%;
         background-color: #0021ff;
         position: absolute;
-        transform: translate(-50% , -50%);
+        transform: translate(-50%, -50%);
         top: 50%;
         left: 50%;
         animation: ${animation} 1s infinite alternate-reverse;

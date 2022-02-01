@@ -8,12 +8,14 @@ import { Markets_data_context } from "./context/Markets_data_context_provider";
 import Logo from "../svg/logo-rounded-inside.svg";
 import Search from "./Search";
 
-export default function Navbar({searchActive, setSearchActive}) {
+//profile
+import Profile from "./profile.js/Profile";
 
-    const { markets_data, setMarkets_data  } = useContext(Markets_data_context);
-    const {all_coins_search_results} = markets_data;
+export default function Navbar({ searchActive, setSearchActive }) {
+    const { markets_data, setMarkets_data } = useContext(Markets_data_context);
+    const { all_coins_search_results } = markets_data;
 
-     function handle_back() {
+    function handle_back() {
         setMarkets_data({
             ...markets_data,
             display: markets_data.markets,
@@ -23,9 +25,9 @@ export default function Navbar({searchActive, setSearchActive}) {
 
     return (
         <Nav style={{ height: searchActive && "9rem", paddingBottom: searchActive && "5rem" }}>
-            <Logo_container>
-                <img src={Logo} alt="Arad Taghikhani" />
-            </Logo_container>
+            <Profile_container>
+                <Profile />
+            </Profile_container>
             {!!all_coins_search_results.length && <Back_to_market onClick={() => handle_back()}>Markets</Back_to_market>}
             <Search searchActive={searchActive} setSearchActive={setSearchActive} />
         </Nav>
@@ -47,15 +49,11 @@ const Nav = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: 100ms;
+    transition: 100ms; 
 `;
-const Logo_container = styled.div`
+const Profile_container = styled.div`
     height: 100%;
     padding: 0.7rem;
-    > img {
-        height: 100%;
-    }
-    cursor: pointer;
 `;
 const Back_to_market = styled.button`
     background-color: #0021ff;
