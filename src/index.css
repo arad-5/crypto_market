@@ -9,7 +9,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background-color: #000624;
     color: #858585;
-    margin: 6rem 0 ;
+    margin: 6rem 0;
 }
 
 code {
@@ -19,13 +19,25 @@ button {
     cursor: pointer;
     border: none;
 }
-input , select{
+input,
+select {
     outline: none;
     border: none;
 }
-select{
+select {
     cursor: pointer;
 }
 a {
     text-decoration: none;
+}
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+    background-color: transparent;
+}
+
+
+/* Handle */
+html ::-webkit-scrollbar-thumb {
+    background: #0021ff;
 }

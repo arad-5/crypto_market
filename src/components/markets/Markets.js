@@ -16,7 +16,7 @@ const Markets = ({ searchActive }) => {
 
     const pageChanger = (direction) => {
         const change = () => {
-            setPage(page + direction);
+            setPage(page => page + direction);
         };
         if (direction === -1) {
             page > 1 && change();

@@ -53,7 +53,7 @@ const Search = ({ searchActive, setSearchActive }) => {
         <Container>
             <Button
                 onClick={() => {
-                    setSearchActive(!searchActive);
+                    setSearchActive(curr => !curr);
                     searchInput.current.focus();
                 }}
             >
