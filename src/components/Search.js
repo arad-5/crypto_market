@@ -20,19 +20,25 @@ const Search = ({ searchActive, setSearchActive }) => {
 
     //search functions
     const handleAllSearch = async (event) => {
+        
+        searchInput.current.blur();
         event.preventDefault();
+
         setSearchActive(false);
+
         const query = searchInput.current.value;
+
         const result_coins = await fetcher(`search?query=${query}`);
         setMarkets_data({
             ...markets_data,
             all_coins_search_results: [],
         });
-        result_coins && setMarkets_data({
-            ...markets_data,
-            all_coins_search_results: result_coins.coins,
-        }); 
-        
+
+        result_coins &&
+            setMarkets_data({
+                ...markets_data,
+                all_coins_search_results: result_coins.coins,
+            });
     };
     const handlePageSearch = () => {
         const query = searchInput.current.value;
@@ -53,7 +59,7 @@ const Search = ({ searchActive, setSearchActive }) => {
         <Container>
             <Button
                 onClick={() => {
-                    setSearchActive(curr => !curr);
+                    setSearchActive((curr) => !curr);
                     searchInput.current.focus();
                 }}
             >
